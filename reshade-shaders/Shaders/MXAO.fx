@@ -15,11 +15,11 @@
 #endif
 
 #ifndef MXAO_MIPLEVEL_IL
-#define MXAO_MIPLEVEL_IL		0	//[0 to 4]      Miplevel of IL texture. 0 = fullscreen, 1 = 1/2 screen width/height, 2 = 1/4 screen width/height and so forth.
+#define MXAO_MIPLEVEL_IL		4	//[0 to 4]      Miplevel of IL texture. 0 = fullscreen, 1 = 1/2 screen width/height, 2 = 1/4 screen width/height and so forth.
 #endif
 
 #ifndef MXAO_ENABLE_IL
-#define MXAO_ENABLE_IL			0	//[0 or 1]	Enables Indirect Lighting calculation. Will cause a major fps hit.
+#define MXAO_ENABLE_IL			1	//[0 or 1]	Enables Indirect Lighting calculation. Will cause a major fps hit.
 #endif
 
 #ifndef MXAO_SMOOTHNORMALS

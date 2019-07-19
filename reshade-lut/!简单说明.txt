@@ -1,6 +1,6 @@
 0.此文件夹无任何功能，只用来给喜欢的LUT一个整理存放的地方
 
-1. 使用时，用喜欢的LUT替换掉 MyLut.png 
+1. 使用时，用喜欢的LUT替换掉 MyLut.png （名字必须是MyLut.png ）
    目录： “\game\reshade-shaders\Textures\MyLut.png” 
    
    （这里划重点：不是“3ARealLut.png”，是【“MyLut.png”】，请注意区分）
@@ -25,7 +25,6 @@
 若想使用其他尺寸LUT
 
 请找到“\reshade-shaders\Shaders\MultiLUT.fx“ 记事本打开
-
 找到并修改箭头所指的【数字】：
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -39,8 +38,11 @@
 #ifndef fLUT_TileAmount
 	#define fLUT_TileAmount 64   ←  总共有多少格，此处默认是64格
 #endif
-#ifndef fLUT_LutAmount
-	#define fLUT_LutAmount 1
-#endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+↓假如你的LUT是这样的（想象成一张LUT图）
+“口口口口口口口口口口口口”
+
+“口”是32x32的正方形，总共有12个“口”
+#define fLUT_TileSizeXY  32 ←  每小格的分辨率32
+#define fLUT_TileAmount 12  ←  总共有多少格，12个
