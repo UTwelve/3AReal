@@ -7,34 +7,27 @@ To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc-sa/4.0/.
 */
 
-// Chromatic Aberration PS (Prism) v1.2.3
+// Chromatic Aberration PS (Prism) v1.2.4
 // inspired by Marty McFly YACA shader
 
-  ////////////////////
- /////// MENU ///////
-////////////////////
+
+	  ////////////
+	 /// MENU ///
+	////////////
 
 #ifndef PrismLimit
 	#define PrismLimit 48 // Maximum sample count
 #endif
 
-uniform int Aberration <
+#include "ReShadeUI.fxh"
+
+uniform int Aberration < __UNIFORM_SLIDER_INT1
 	ui_label = "Aberration scale in pixels";
-	#if __RESHADE__ < 40000
-		ui_type = "drag";
-	#else
-		ui_type = "slider";
-	#endif
 	ui_min = -48; ui_max = 48;
 > = 6;
 
-uniform float Curve <
+uniform float Curve < __UNIFORM_SLIDER_FLOAT1
 	ui_label = "Aberration curve";
-	#if __RESHADE__ < 40000
-		ui_type = "drag";
-	#else
-		ui_type = "slider";
-	#endif
 	ui_min = 0.0; ui_max = 4.0; ui_step = 0.01;
 > = 1.0;
 
@@ -44,21 +37,17 @@ uniform bool Automatic <
 	ui_category = "Performance";
 > = true;
 
-uniform int SampleCount <
+uniform int SampleCount < __UNIFORM_SLIDER_INT1
 	ui_label = "Samples";
 	ui_tooltip = "Amount of samples (only even numbers are accepted, odd numbers will be clamped)";
-	#if __RESHADE__ < 40000
-		ui_type = "drag";
-	#else
-		ui_type = "slider";
-	#endif
 	ui_min = 6; ui_max = 32;
 	ui_category = "Performance";
 > = 8;
 
-  //////////////////////
- /////// SHADER ///////
-//////////////////////
+
+	  //////////////
+	 /// SHADER ///
+	//////////////
 
 #include "ReShade.fxh"
 
@@ -129,7 +118,12 @@ void ChromaticAberrationPS(float4 vois : SV_Position, float2 texcoord : TexCoord
 	}
 }
 
-technique ChromaticAberration
+
+	  //////////////
+	 /// OUTPUT ///
+	//////////////
+
+technique ChromaticAberration < ui_label = "Chromatic Aberration"; >
 {
 	pass
 	{

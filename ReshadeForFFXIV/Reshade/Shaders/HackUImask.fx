@@ -10,8 +10,9 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 uniform float BlackMaskPower <
-	ui_category = "Amount";
-	ui_label = "BlackMaskAmount";
+	ui_category = "程度";
+	ui_label = "黑色蒙版权重";
+	ui_tooltip = "可以溢出范围.";
 	ui_type = "slider";
 	ui_min = 0.0; ui_max = 2.0; ui_step = 0.1;
 > = 1.0;
@@ -25,10 +26,11 @@ uniform float ClampMax <
 > = 1.0;
 //+*/
 uniform float Alpha <
-	ui_category = "Clamp";
-	ui_label = "Alpha";
+	ui_category = "钳制范围";
+	ui_label = "透明度";
+	ui_tooltip = "钳制透明度捕获的范围.";
 	ui_type = "slider";
-	ui_min = 0.0; ui_max = 1.0; ui_step = 0.1;
+	ui_min = 0.0; ui_max = 1.0; ui_step = 0.001;
 > = 0.1;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,10 +71,13 @@ void PS_HackUICut(float4 pos : SV_Position, float2 texcoord : TEXCOORD, out floa
 
 //////////////////////////////////////////////
 
-technique HackUIMask <
-	ui_tooltip = "Keep UI";
-	enabled = true;
->
+technique HackUIMask
+< ui_tooltip = "                      >> HackUIMask <<\n\n"
+			   "HackUIMask的作用是在流程中去除UI并在流程后加回\n"
+			   "  1.HackUIMask放在最顶部，用来捕捉流程初始原画面\n"
+               "  2.HackUICut放在之后，用来返回一个UI变为黑色的画面，减小UI对流程的影响\n"
+			   "  3.HackUIRestore放在最后，将UI放回画面\n"
+               "\nby Haikui"; >
 {
 	pass PS_HackUIMask
 	{
@@ -86,8 +91,7 @@ technique HackUIMask <
 
 //////////////////////////////////////////////
 technique HackUIRestore <
-	ui_tooltip = "Restore UI";
-	enabled = true;
+	ui_tooltip = "2.HackUICut放在之后，返回一个UI变为黑色的画面，减小UI对流程的影响";
 >
 {
 	pass
@@ -104,8 +108,7 @@ technique HackUIRestore <
 }
 //////////////////////////////////////////////
 technique HackUICut <
-	ui_tooltip = "black mask,prevent UI from affecting other fx";
-	enabled = true;
+	ui_tooltip = "3.HackUIRestore放在最后，将UI放回画面";
 >
 {
 	pass
