@@ -3,7 +3,7 @@
 // HackUImask
 // by UTwelve
 // work for FF14， Other game...can try...so subtle,so hack
-// 
+// 1.2 增加了背景色调节
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include "ReShade.fxh"
@@ -32,6 +32,14 @@ uniform float Alpha <
 	ui_type = "slider";
 	ui_min = 0.0; ui_max = 1.0; ui_step = 0.001;
 > = 0.1;
+
+uniform float3 BackColor <
+	ui_category = "背景颜色";
+	ui_label = "颜色";
+	ui_tooltip = "填充被扣掉的UI.";
+	ui_type = "color";
+> = float3(0.1, 0.1, 0.1) / 255.0;
+
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -62,7 +70,7 @@ void PS_HackUICut(float4 pos : SV_Position, float2 texcoord : TEXCOORD, out floa
 {
 	float4 GameScreen = tex2D(HackUIMask_Sampler, texcoord).a ;
 	float4 CutS = step(Alpha, GameScreen) ;
-    color.rgb = 0 ;
+    color.rgb = BackColor.rgb ;
 	color.a = GameScreen.a * BlackMaskPower  ;
 
 }
@@ -88,27 +96,9 @@ technique HackUIMask
 	}
 
 }
-
-//////////////////////////////////////////////
-technique HackUIRestore <
-	ui_tooltip = "2.HackUICut放在之后，返回一个UI变为黑色的画面，减小UI对流程的影响";
->
-{
-	pass
-	{
-		VertexShader = PostProcessVS;
-		PixelShader = PS_HackUIRestore;
-
-		ClearRenderTargets = false;
-		
-		BlendEnable = true;
-		SrcBlend = SRCALPHA;
-		DestBlend = INVSRCALPHA;
-	}
-}
 //////////////////////////////////////////////
 technique HackUICut <
-	ui_tooltip = "3.HackUIRestore放在最后，将UI放回画面";
+	ui_tooltip = "2.HackUICut放在之后，返回一个UI变为黑色的画面，减小UI对流程的影响";
 >
 {
 	pass
@@ -125,3 +115,20 @@ technique HackUICut <
 	}
 }
  
+//////////////////////////////////////////////
+technique HackUIRestore <
+	ui_tooltip = "3.HackUIRestore放在最后，将UI放回画面";
+>
+{
+	pass
+	{
+		VertexShader = PostProcessVS;
+		PixelShader = PS_HackUIRestore;
+
+		ClearRenderTargets = false;
+		
+		BlendEnable = true;
+		SrcBlend = SRCALPHA;
+		DestBlend = INVSRCALPHA;
+	}
+}

@@ -15,11 +15,11 @@
 #endif
 
 #ifndef MXAO_MIPLEVEL_IL
- #define MXAO_MIPLEVEL_IL		4	//[0 to 4]      Miplevel of IL texture. 0 = fullscreen, 1 = 1/2 screen width/height, 2 = 1/4 screen width/height and so forth.
+ #define MXAO_MIPLEVEL_IL		1	//[0 to 4]      Miplevel of IL texture. 0 = fullscreen, 1 = 1/2 screen width/height, 2 = 1/4 screen width/height and so forth.
 #endif
 
 #ifndef MXAO_ENABLE_IL
- #define MXAO_ENABLE_IL			0	//[0 or 1]	Enables Indirect Lighting calculation. Will cause a major fps hit.
+ #define MXAO_ENABLE_IL			1	//[0 or 1]	Enables Indirect Lighting calculation. Will cause a major fps hit.
 #endif
 
 #ifndef MXAO_SMOOTHNORMALS
@@ -27,7 +27,7 @@
 #endif
 
 #ifndef MXAO_TWO_LAYER
- #define MXAO_TWO_LAYER                 0       //[0 or 1]      Splits MXAO into two separate layers that allow for both large and fine AO.
+ #define MXAO_TWO_LAYER                 1       //[0 or 1]      Splits MXAO into two separate layers that allow for both large and fine AO.
 #endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -41,30 +41,35 @@ uniform int MXAO_GLOBAL_SAMPLE_QUALITY_PRESET <
         ui_label = "Sample Quality";
         ui_items = "Very Low\0Low\0Medium\0High\0Very High\0Ultra\0Maximum\0";
         ui_tooltip = "Global quality control, main performance knob. Higher radii might require higher quality.";
+    ui_category = "全局";
 > = 2;
 
 uniform float MXAO_SAMPLE_RADIUS < __UNIFORM_SLIDER_FLOAT1
         ui_min = 0.5; ui_max = 20.0;
         ui_label = "Sample Radius";
         ui_tooltip = "Sample radius of MXAO, higher means more large-scale occlusion with less fine-scale details.";
+    ui_category = "全局";
 > = 2.5;
 
 uniform float MXAO_SAMPLE_NORMAL_BIAS < __UNIFORM_SLIDER_FLOAT1
         ui_min = 0.0; ui_max = 0.8;
         ui_label = "Normal Bias";
         ui_tooltip = "Occlusion Cone bias to reduce self-occlusion of surfaces that have a low angle to each other.";
+    ui_category = "全局";
 > = 0.2;
 
 uniform float MXAO_GLOBAL_RENDER_SCALE < __UNIFORM_SLIDER_FLOAT1
         ui_label = "Render Size Scale";
         ui_min = 0.50; ui_max = 1.00;
         ui_tooltip = "Factor of MXAO resolution, lower values greatly reduce performance overhead but decrease quality.\n1.0 = MXAO is computed in original resolution\n0.5 = MXAO is computed in 1/2 width 1/2 height of original resolution\n...";
+    ui_category = "全局";
 > = 1.0;
 
 uniform float MXAO_SSAO_AMOUNT < __UNIFORM_SLIDER_FLOAT1
         ui_min = 0.00; ui_max = 4.00;
         ui_label = "Ambient Occlusion Amount";
         ui_tooltip = "Intensity of AO effect. Can cause pitch black clipping if set too high.";
+    ui_category = "AOIL";
 > = 1.00;
 
 #if(MXAO_ENABLE_IL != 0)
@@ -72,51 +77,58 @@ uniform float MXAO_SSAO_AMOUNT < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.00; ui_max = 12.00;
                 ui_label = "Indirect Lighting Amount";
                 ui_tooltip = "Intensity of IL effect. Can cause overexposured white spots if set too high.";
-        > = 4.00;
+                ui_category = "AOIL";
+		> = 4.00;
 
         uniform float MXAO_SSIL_SATURATION < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.00; ui_max = 3.00;
                 ui_label = "Indirect Lighting Saturation";
                 ui_tooltip = "Controls color saturation of IL effect.";
-        > = 1.00;
+                ui_category = "AOIL";
+		> = 1.00;
         
         uniform float MXAO_SSIL_SATURATION_FILTER < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.00; ui_max = 1.00;
                 ui_label = "Indirect Lighting Saturation Filter";
                 ui_tooltip = "Controls how much unsaturated colors should be excluded from IL. Or in other words how much saturation should control the amount of light bounced. Physically inaccurate but helps reducing ugly bright corners while keeping nicer color bleeding intact.";
-        > = 0.00;
+                ui_category = "AOIL";
+		> = 0.00;
         
         uniform float MXAO_SSIL_GAMMA < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 1.00; ui_max = 3.00;
                 ui_label = "Indirect Lighting Gamma";
                 ui_tooltip = "Exponent for IL result. ( pow(<IL>, gamma) )";
-        > = 1.00;
+                ui_category = "AOIL";
+		> = 1.00;
 #endif
 
 #if (MXAO_TWO_LAYER != 0)
         uniform float MXAO_SAMPLE_RADIUS_SECONDARY < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.1; ui_max = 1.00;
                 ui_label = "Fine AO Scale";
-                ui_tooltip = "Multiplier of Sample Radius for fine geometry. A setting of 0.5 scans the geometry at half the radius of the main AO.";
-        > = 0.2;
+                ui_category = "TWO_LAYER";
+		> = 0.2;
 
         uniform float MXAO_AMOUNT_FINE < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.00; ui_max = 1.00;
                 ui_label = "Fine AO intensity multiplier";
                 ui_tooltip = "Intensity of small scale AO / IL.";
-        > = 1.0;
+                ui_category = "TWO_LAYER";
+		> = 1.0;
 
         uniform float MXAO_AMOUNT_COARSE < __UNIFORM_SLIDER_FLOAT1
                 ui_min = 0.00; ui_max = 1.00;
                 ui_label = "Coarse AO intensity multiplier";
                 ui_tooltip = "Intensity of large scale AO / IL.";
-        > = 1.0;
+                        ui_category = "TWO_LAYER";
+		> = 1.0;
 #endif
 
 uniform float MXAO_GAMMA < __UNIFORM_SLIDER_FLOAT1
         ui_min = 1.00; ui_max = 3.00;
         ui_label = "AO Gamma";
         ui_tooltip = "Exponent for the AO result. ( pow(<AO>, gamma) )";
+        ui_category = "AOIL";
 > = 1.00;
 
 uniform int MXAO_DEBUG_VIEW_ENABLE <
@@ -124,24 +136,28 @@ uniform int MXAO_DEBUG_VIEW_ENABLE <
         ui_label = "Enable Debug View";
         ui_items = "None\0AO/IL channel\0Culling Mask\0";
         ui_tooltip = "Different debug outputs";
+        ui_category = "debug";
 > = 0;
 
 uniform int MXAO_BLEND_TYPE < __UNIFORM_SLIDER_INT1
         ui_min = 0; ui_max = 3;
         ui_label = "Blending Mode";
         ui_tooltip = "Different blending modes for merging AO/IL with original color.\0Blending mode 0 matches formula of MXAO 2.0 and older.";
+        ui_category = "Blending";
 > = 0;
 
 uniform float MXAO_FADE_DEPTH_START < __UNIFORM_SLIDER_FLOAT1
         ui_label = "Fade Out Start";
         ui_min = 0.00; ui_max = 1.00;
         ui_tooltip = "Distance where MXAO starts to fade out. 0.0 = camera, 1.0 = sky. Must be less than Fade Out End.";
+        ui_category = "Blending";
 > = 0.05;
 
 uniform float MXAO_FADE_DEPTH_END < __UNIFORM_SLIDER_FLOAT1
         ui_label = "Fade Out End";
         ui_min = 0.00; ui_max = 1.00;
         ui_tooltip = "Distance where MXAO completely fades out. 0.0 = camera, 1.0 = sky. Must be greater than Fade Out Start.";
+        ui_category = "Blending";
 > = 0.4;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -5,6 +5,7 @@ This work is licensed under the Creative Commons
 Attribution-ShareAlike 4.0 International License. 
 To view a copy of this license, visit 
 http://creativecommons.org/licenses/by-sa/4.0/.
+修复函数名导致的BUG
 */
 
 #include "ReShade.fxh"
@@ -39,7 +40,7 @@ uniform int FOV < __UNIFORM_SLIDER_INT1
 	ui_category = "Radial distance";
 > = 90;
 
-uniform int Pass < __UNIFORM_RADIO_INT1
+uniform int Passf < __UNIFORM_RADIO_INT1
 	ui_label = "Keying type";
 	ui_items = "Background key\0Foreground key\0";
 	ui_category = "Direction adjustment";
@@ -107,7 +108,7 @@ float3 ChromakeyPS(float4 vois : SV_Position, float2 texcoord : TexCoord) : SV_T
 
 	// Generate depth mask
 	float DepthMask = MaskAA(texcoord);
-	if(bool(Pass)) DepthMask = 1.0-DepthMask;
+	if(bool(Passf)) DepthMask = 1.0-DepthMask;
 
 	return lerp(tex2D(ReShade::BackBuffer, texcoord).rgb, Screen, DepthMask);
 }

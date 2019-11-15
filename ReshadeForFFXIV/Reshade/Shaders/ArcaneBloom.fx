@@ -29,7 +29,7 @@ namespace ArcaneBloom { namespace _ {
 #endif
 
 #ifndef ARCANE_BLOOM_USE_SATURATION
-#define ARCANE_BLOOM_USE_SATURATION 0
+#define ARCANE_BLOOM_USE_SATURATION 1
 #endif
 
 #ifndef ARCANE_BLOOM_USE_TEMPORAL
@@ -41,7 +41,7 @@ namespace ArcaneBloom { namespace _ {
 #endif
 
 #ifndef ARCANE_BLOOM_WHITE_POINT_FIX
-#define ARCANE_BLOOM_WHITE_POINT_FIX 0
+#define ARCANE_BLOOM_WHITE_POINT_FIX 1
 #endif
 
 #ifndef ARCANE_BLOOM_GAMMA_MODE
@@ -134,7 +134,7 @@ static const float2 ScreenSize = float2(BUFFER_WIDTH, BUFFER_HEIGHT);
 //==========//
 
 uniform float uBloomIntensity <
-	ui_label = "Intensity";
+	ui_label = "强度";
 	ui_category = "Bloom";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
@@ -146,7 +146,7 @@ uniform float uBloomIntensity <
 #if ARCANE_BLOOM_USE_TEMPERATURE
 
 uniform float uBloomTemperature <
-	ui_label = "Bloom Temperature";
+	ui_label = "Bloom 温度";
 	ui_category = "Bloom";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
@@ -160,7 +160,7 @@ uniform float uBloomTemperature <
 #if ARCANE_BLOOM_USE_SATURATION
 
 uniform float uBloomSaturation <
-	ui_label = "Bloom Saturation";
+	ui_label = "Bloom 饱和";
 	ui_category = "Bloom";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
@@ -174,8 +174,8 @@ uniform float uBloomSaturation <
 #if ARCANE_BLOOM_USE_DIRT
 
 uniform float uDirtIntensity <
-	ui_label = "Intensity";
-	ui_category = "Dirt";
+	ui_label = "强度";
+	ui_category = "灰尘";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
 	ui_min = 0.0;
@@ -188,8 +188,8 @@ uniform float uDirtIntensity <
 #if ARCANE_BLOOM_USE_ADAPTATION
 
 uniform float uAdapt_Intensity <
-	ui_label   = "Intensity";
-	ui_category = "Adaptation";
+	ui_label   = "强度";
+	ui_category = "自适应";
 	ui_tooltip = "Default: 1.0";
 	ui_type    = "drag";
 	ui_min     = 0.0;
@@ -198,8 +198,8 @@ uniform float uAdapt_Intensity <
 > = 1.0;
 
 uniform float uAdapt_Time <
-	ui_label   = "Time to Adapt (Seconds)";
-	ui_category = "Adaptation";
+	ui_label   = "适应时间 (秒)";
+	ui_category = "自适应";
 	ui_tooltip = "Default: 100.0";
 	ui_type    = "drag";
 	ui_min     = 0.01;
@@ -208,8 +208,8 @@ uniform float uAdapt_Time <
 > = 1.0;
 
 uniform float uAdapt_Sensitivity <
-	ui_label   = "Sensitivity";
-	ui_category = "Adaptation";
+	ui_label   = "灵敏度";
+	ui_category = "自适应";
 	ui_tooltip = "Default: 1.0";
 	ui_type    = "drag";
 	ui_min     = 0.0;
@@ -218,8 +218,8 @@ uniform float uAdapt_Sensitivity <
 > = 1.0;
 
 uniform int uAdapt_Precision <
-	ui_label   = "Precision";
-	ui_category = "Adaptation";
+	ui_label   = "精度";
+	ui_category = "自适应";
 	ui_tooltip = "Default: 0";
 	ui_type    = "drag";
 	ui_min     = 0;
@@ -228,14 +228,14 @@ uniform int uAdapt_Precision <
 > = 0;
 
 uniform bool uAdapt_DoLimits <
-	ui_label   = "Use Limits";
-	ui_category = "Adaptation";
+	ui_label   = "使用限制";
+	ui_category = "自适应";
 	ui_tooltip = "Default: On";
 > = true;
 
 uniform float2 uAdapt_Limits <
-	ui_label   = "Limits (Min/Max)";
-	ui_category = "Adaptation";
+	ui_label   = "限制 (Min/Max)";
+	ui_category = "自适应";
 	ui_tooltip = "Default: (0.0, 1.0)";
 	ui_type    = "drag";
 	ui_min     = 0.0;
@@ -248,8 +248,8 @@ uniform float2 uAdapt_Limits <
 #if ARCANE_BLOOM_USE_CUSTOM_DISTRIBUTION
 
 uniform float uMean <
-	ui_label = "Mean";
-	ui_category = "Distribution";
+	ui_label = "平均值";
+	ui_category = "分布";
 	ui_type = "drag";
 	ui_min = -2.0;
 	ui_max = 5.0;
@@ -257,8 +257,8 @@ uniform float uMean <
 > = 0.0;
 
 uniform float uVariance <
-	ui_label = "Variance";
-	ui_category = "Distribution";
+	ui_label = "方差";
+	ui_category = "分布";
 	ui_type = "drag";
 	ui_min = 1.0;
 	ui_max = 100.0;
@@ -268,8 +268,8 @@ uniform float uVariance <
 #endif
 
 uniform float uExposure <
-	ui_label   = "Exposure";
-	ui_category = "Miscellaneous";
+	ui_label   = "曝光";
+	ui_category = "杂项";
 	ui_tooltip = "Default: 1.0";
 	ui_type    = "drag";
 	ui_min     = 0.001;
@@ -278,8 +278,8 @@ uniform float uExposure <
 > = 1.0;
 
 uniform float uMaxBrightness <
-	ui_label   = "Max Brightness";
-	ui_category = "Miscellaneous";
+	ui_label   = "最大亮度";
+	ui_category = "杂项";
 	ui_tooltip = "Default: 100.0";
 	ui_type    = "drag";
 	ui_min     = 1.0;
@@ -291,7 +291,7 @@ uniform float uMaxBrightness <
 
 uniform float uWhitePoint <
 	ui_label = "White Point";
-	ui_category = "Miscellaneous";
+	ui_category = "杂项";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
 	ui_min = 0.0;
@@ -304,8 +304,8 @@ uniform float uWhitePoint <
 #if ARCANE_BLOOM_USE_TEMPORAL
 
 uniform float uTemporalIntensity <
-	ui_label = "Temporal Intensity";
-	ui_category = "Miscellaneous";
+	ui_label = "时间强度";
+	ui_category = "杂项";
 	ui_tooltip = "Default: 1.0";
 	ui_type = "drag";
 	ui_min = 1.0;
@@ -318,7 +318,7 @@ uniform float uTemporalIntensity <
 #if ARCANE_BLOOM_GAMMA_MODE == CUSTOM
 uniform float uGamma <
 	ui_label   = "Gamma";
-	ui_category = "Miscellaneous";
+	ui_category = "杂项";
 	ui_tooltip = "Default: 2.2";
 	ui_type    = "drag";
 	ui_min     = 0.4545;
