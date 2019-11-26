@@ -100,191 +100,208 @@ namespace CinematicDOF
 
 	// ------------- FOCUSING
 	uniform bool UseAutoFocus <
-		ui_category = "Focusing";
-		ui_label = "Use auto-focus";
-		ui_tooltip = "If enabled it will make the shader focus on the point specified as 'Auto-focus point',\notherwise it will put the focus plane at the depth specified in 'Manual-focus plane'.";
+		ui_category = "对焦";
+		ui_label = "使用自动对焦";
+		ui_tooltip = "如果启用此选项则将自动对焦于'自动对焦点',\n"
+			"关闭它则将对焦于您设置的'手动焦平面'.";
 	> = true;
 	uniform bool UseMouseDrivenAutoFocus <
-		ui_category = "Focusing";
-		ui_label = "Use mouse-driven auto-focus";
-		ui_tooltip = "Enables mouse driven auto-focus. If enabled, and 'Use auto-focus' is enabled, the\nauto-focus point is read from the mouse coordinates, otherwise the 'Auto-focus point' is used.";
+		ui_category = "对焦";
+		ui_label = "使用鼠标对焦";
+		ui_tooltip = "请在勾选了自动对焦后再启用此选项,\n"
+			"启用后对焦点将跟随鼠标指针移动";
 	> = true;
 	uniform float2 AutoFocusPoint <
-		ui_category = "Focusing";
-		ui_label = "Auto-focus point";
+		ui_category = "对焦";
+		ui_label = "自动对焦点";
 		ui_type = "drag";
 		ui_step = 0.001;
 		ui_min = 0.000; ui_max = 1.000;
-		ui_tooltip = "The X and Y coordinates of the auto-focus point. 0,0 is the upper left corner,\nand 0.5, 0.5 is at the center of the screen. Only used if 'Use auto focus' is enabled.";
+		ui_tooltip = "设置自动对焦点的X和Y坐标.0,0是屏幕左上角,\n"
+			"0.5, 0.5是屏幕中央.此选项仅在启用自动对焦时有效.";
 	> = float2(0.5, 0.5);
 	uniform float AutoFocusTransitionSpeed <
-		ui_category = "Focusing";
-		ui_label= "Auto-focus transition speed";
+		ui_category = "对焦";
+		ui_label= "自动对焦转换速度";
 		ui_type = "drag";
 		ui_min = 0.001; ui_max = 1.0;
 		ui_step = 0.01;
-		ui_tooltip = "The speed the shader will transition between different focus points when using auto-focus.\n0.001 means very slow, 1.0 means instantly. Only used if 'Use auto-focus' is enabled.";
+		ui_tooltip = "此选项用于控制自动对焦时不同焦点的转换速度\n"
+			"0.001最慢,1.0最快.此选项仅在启用自动对焦时有效.";
 	> = 0.2;
 	uniform float ManualFocusPlane <
-		ui_category = "Focusing";
-		ui_label= "Manual-focus plane";
+		ui_category = "对焦";
+		ui_label= "手动焦平面";
 		ui_type = "drag";
 		ui_min = 0.100; ui_max = 150.00;
 		ui_step = 0.01;
-		ui_tooltip = "The depth of focal plane related to the camera when 'Use auto-focus' is off.\nOnly used if 'Use auto-focus' is disabled.";
+		ui_tooltip = "不使用自动对焦时的焦平面深度";
 	> = 10.00;
 	uniform float FocalLength <
-		ui_category = "Focusing";
-		ui_label = "Focal length (mm)";
+		ui_category = "对焦";
+		ui_label = "镜头焦距 (mm)";
 		ui_type = "drag";
 		ui_min = 10; ui_max = 300.0;
 		ui_step = 1.0;
-		ui_tooltip = "Focal length of the used lens. The longer the focal length, the narrower the\ndepth of field and thus the more is out of focus. For portraits, start with 120 or 150.";
+		ui_tooltip = "焦距越大,景深越浅,虚化效果越大.焦距越小,景深越大,虚化效果越小.\n"
+			"插件作者推荐的人像焦段是120或150(但我更喜欢85).";
 	> = 120.00;
 	uniform float FNumber <
-		ui_category = "Focusing";
-		ui_label = "Aperture (f-number)";
+		ui_category = "对焦";
+		ui_label = "镜头光圈 (f-number)";
 		ui_type = "drag";
 		ui_min = 1; ui_max = 22.0;
 		ui_step = 0.1;
-		ui_tooltip = "The f-number (also known as f-stop) to use. The higher the number, the wider\nthe depth of field, meaning the more is in-focus and thus the less is out of focus.\nFor portraits, start with 2.8.";
+		ui_tooltip = "数值越小虚化效果越强,反之亦然.一般设置在2.8到11之间.\n"
+			"小于2.8的大光圈在狒狒里因为对焦精度的问题,并不是那么好用.";
 	> = 2.8;
 	// ------------- FOCUSING, OVERLAY
 	uniform bool ShowOutOfFocusPlaneOnMouseDown <
-		ui_category = "Focusing, overlay";
-		ui_label = "Show out-of-focus plane overlay on mouse down";
-		ui_tooltip = "Enables the out-of-focus plane overlay when the left mouse button is pressed down,\nwhich helps with fine-tuning the focusing.";
+		ui_category = "对焦,覆盖层";
+		ui_label = "在鼠标指针下方显示焦外平面";
+		ui_tooltip = "按下鼠标左键时启用焦外平面覆盖层,这有助于微调焦距";
 	> = true;
 	uniform float3 OutOfFocusPlaneColor <
-		ui_category = "Focusing, overlay";
-		ui_label = "Out-of-focus plane overlay color";
+		ui_category = "对焦,覆盖层";
+		ui_label = "焦外平面覆盖层颜色";
 		ui_type= "color";
-		ui_tooltip = "Specifies the color of the out-of-focus planes rendered when the left-mouse button\nis pressed and 'Show out-of-focus plane on mouse down' is enabled. In (red , green, blue)";
+		ui_tooltip = "指定在按下鼠标左键并启用'在鼠标按下时显示焦外平面'时渲染的焦外平面的颜色.";
 	> = float3(0.8,0.8,0.8);
 	uniform float OutOfFocusPlaneColorTransparency <
-		ui_category = "Focusing, overlay";
-		ui_label = "Out-of-focus plane transparency";
+		ui_category = "对焦,覆盖层";
+		ui_label = "焦外平面覆盖层透明度";
 		ui_type = "drag";
 		ui_min = 0.01; ui_max = 1.0;
-		ui_tooltip = "Amount of transparency of the out-of-focus planes. 0.0 is transparent, 1.0 is opaque.";
+		ui_tooltip = "焦外平面的透明度.0.0是透明度,1.0是不透明的.";
 	> = 0.7;
 	uniform float3 FocusPlaneColor <
-		ui_category = "Focusing, overlay";
-		ui_label = "Focus plane overlay color";
+		ui_category = "对焦,覆盖层";
+		ui_label = "焦平面覆盖层颜色";
 		ui_type= "color";
-		ui_tooltip = "Specifies the color of the focus plane rendered when the left-mouse button\nis pressed and 'Show out-of-focus plane on mouse down' is enabled. In (red , green, blue)";
+		ui_tooltip = "指定当按下鼠标左键并启用'在鼠标指针下方显示焦外平面'时渲染焦平面的颜色.";
 	> = float3(0.0, 0.0, 1.0);
 	uniform float4 FocusCrosshairColor<
-		ui_category = "Focusing, overlay";
-		ui_label = "Focus crosshair color";
+		ui_category = "对焦,覆盖层";
+		ui_label = "焦点十字线颜色";
 		ui_type = "color";
-		ui_tooltip = "Specifies the color of the crosshair for the auto-focus.\nAuto-focus must be enabled";
+		ui_tooltip = "指定用于自动聚焦的十字线的颜色,仅在自动聚焦启用时有效.";
 	> = float4(1.0, 0.0, 1.0, 1.0);
 	
 	// ------------- BLUR TWEAKING
 	uniform float FarPlaneMaxBlur <
-		ui_category = "Blur tweaking";
-		ui_label = "Far plane max blur";
+		ui_category = "模糊调整";
+		ui_label = "远裁剪面最大模糊";
 		ui_type = "drag";
 		ui_min = 0.000; ui_max = 4.0;
 		ui_step = 0.01;
-		ui_tooltip = "The maximum blur a pixel can have when it has its maximum CoC in the far plane. Use this as a tweak\nto adjust the max far plane blur defined by the lens parameters. Don't use this as your primarily\nblur factor, use the lens parameters Focal Length and Aperture for that instead.";
+		ui_tooltip = "像素在远裁剪面中具有最大模糊圈时可以具有的最大模糊度."
+			"将此调整用作调整由镜头参数定义的最大远平面模糊.\n"
+			"如果您想调整模糊程度,请主要使用使用'焦距'和'光圈'而不是这一项.";
 	> = 1.0;
 	uniform float NearPlaneMaxBlur <
-		ui_category = "Blur tweaking";
-		ui_label = "Near plane max blur";
+		ui_category = "模糊调整";
+		ui_label = "近裁剪面最大模糊";
 		ui_type = "drag";
 		ui_min = 0.000; ui_max = 4.0;
 		ui_step = 0.01;
-		ui_tooltip = "The maximum blur a pixel can have when it has its maximum CoC in the near Plane. Use this as a tweak to\nadjust the max near plane blur defined by the lens parameters.  Don't use this as your primarily blur factor,\nuse the lens parameters Focal Length and Aperture for that instead.";
+		ui_tooltip = "像素在近裁剪面中具有最大模糊圈时可以具有的最大模糊度."
+			"将此调整用作调整由镜头参数定义的最大远平面模糊.\n"
+			"如果您想调整模糊程度,请主要使用使用'焦距'和'光圈'而不是这一项.";
 	> = 1.0;
 	uniform float BlurQuality <
-		ui_category = "Blur tweaking";
-		ui_label = "Overall blur quality";
+		ui_category = "模糊调整";
+		ui_label = "整体模糊质量";
 		ui_type = "drag";
 		ui_min = 2.0; ui_max = 12.0;
-		ui_tooltip = "The number of rings to use in the disc-blur algorithm. The more rings the better\nthe blur results, but also the slower it will get.";
+		ui_tooltip = "此数值越大模糊效果越好,但模糊的速度也越慢.";
 		ui_step = 1;
 	> = 5.0;
 	uniform float BokehBusyFactor <
-		ui_category = "Blur tweaking";
-		ui_label="Bokeh busy factor";
+		ui_category = "模糊调整";
+		ui_label="散景繁忙度";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 1.00;
-		ui_tooltip = "The 'bokeh busy factor' for the blur: 0 means no busyness boost, 1.0 means extra busyness boost.";
+		ui_tooltip = "模糊的散景繁忙度:0意味着没有繁忙度的提升,1.0意味着额外的繁忙度提升.";
 		ui_step = 0.01;
 	> = 0.500;
 	uniform float PostBlurSmoothing <
-		ui_category = "Blur tweaking";
-		ui_label = "Post-blur smoothing factor";
+		ui_category = "模糊调整";
+		ui_label = "后模糊平滑度";
 		ui_type = "drag";
 		ui_min = 0.0; ui_max = 2.0;
-		ui_tooltip = "The amount of post-blur smoothing blur to apply. 0.0 means no smoothing blur is applied.";
+		ui_tooltip = "要应用的后模糊平滑度, 0.0表示不应用平滑模糊.";
 		ui_step = 0.01;
 	> = 0.0;
 	// ------------- HIGHLIGHT TWEAKING
 	uniform float HighlightAnamorphicFactor <
-		ui_category = "Highlight tweaking, anamorphism";
-		ui_label="Anamorphic factor";
+		ui_category = "高光调整,变形";
+		ui_label="变形度";
 		ui_type = "drag";
 		ui_min = 0.01; ui_max = 1.00;
-		ui_tooltip = "The anamorphic factor of the bokeh highlights. A value of 1.0 (default) gives perfect\ncircles, a factor of e.g. 0.1 gives thin ellipses";
+		ui_tooltip = "散景高光在预设的1.0时是完美的圆,而例如0.1则将会是细椭圆.";
 		ui_step = 0.01;
 	> = 1.0;
 	uniform float HighlightAnamorphicSpreadFactor <
-		ui_category = "Highlight tweaking, anamorphism";
-		ui_label="Anamorphic spread factor";
+		ui_category = "高光调整,变形";
+		ui_label="变形扩散度";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 1.00;
-		ui_tooltip = "The spread factor for the anamorphic factor. 0.0 means it's relative to the distance\nto the center of the screen, 1.0 means the factor is applied everywhere evenly,\nno matter how far the pixel is to the center of the screen.";
+		ui_tooltip = "变形的扩散度调整.0.0意味着变形根据到屏幕中央的距离变化而变化.\n"
+			"1.0意味着整个屏幕所有位置的变形程度都一样.";
 		ui_step = 0.01;
 	> = 0.0;
 	uniform float HighlightAnamorphicAlignmentFactor <
-		ui_category = "Highlight tweaking, anamorphism";
-		ui_label="Anamorphic alignment factor";
+		ui_category = "高光调整,变形";
+		ui_label="变形对齐度";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 1.00;
-		ui_tooltip = "The alignment factor for the anamorphic deformation. 0.0 means you get evenly rotated\nellipses around the center of the screen, 1.0 means all bokeh highlights are\naligned vertically.";
+		ui_tooltip = "0.0表示散景高光绕屏幕中心均匀地旋转,1.0表示所有散景高光都垂直对齐.";
 		ui_step = 0.01;
 	> = 0.0;
 	uniform float HighlightGainFarPlane <
-		ui_category = "Highlight tweaking, far plane";
-		ui_label="Highlight gain";
+		ui_category = "高光调整,远裁剪面";
+		ui_label="高光增益";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 5.00;
-		ui_tooltip = "The gain for highlights in the far plane. The higher the more a highlight gets\nbrighter. Tweak this in tandem with the Highlight threshold. Best results are\nachieved with bright spots in dark(er) backgrounds.";
+		ui_tooltip = "远裁剪面高光的增益. 越高,高光越亮."
+			"与高光阈值配合调整.最好的结果是在黑暗的前景中获得亮点.";
 		ui_step = 0.01;
 	> = 0.500;
 	uniform float HighlightThresholdFarPlane <
-		ui_category = "Highlight tweaking, far plane";
-		ui_label="Highlight threshold";
+		ui_category = "高光调整,远裁剪面";
+		ui_label="高光阈值";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 1.00;
-		ui_tooltip = "The threshold for the source pixels. Pixels with a luminosity above this threshold\nwill be highlighted. Raise this value to only keep the highlights you want.\nWhen highlight type is Twinkle circlets, set the threshold at 0.5 or higher\nfor blur without highlights.";
+		ui_tooltip = "源像素的阈值.亮度高于此阈值的像素将突出显示.\n"
+			"提高此值仅保留所需的高光.当高光类型为'闪烁圆圈'时,\n"
+			"请将阈值设置为0.5或更高,以获得没有高光的模糊.";
 		ui_step = 0.01;
 	> = 0.0;
 	uniform float HighlightGainNearPlane <
-		ui_category = "Highlight tweaking, near plane";
-		ui_label="Highlight gain";
+		ui_category = "高光调整,近裁剪面";
+		ui_label="高光增益";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 5.00;
-		ui_tooltip = "The gain for highlights in the near plane. The higher the more a highlight gets\nbrighter. Tweak this in tandem with the Highlight threshold. Best results are\nachieved with bright spots in dark(er) foregrounds.";
+		ui_tooltip = "近裁剪面高光的增益. 越高,高光越亮."
+			"与高光阈值配合调整.最好的结果是在黑暗的前景中获得亮点.";
 		ui_step = 0.01;
 	> = 0.200;
 	uniform float HighlightThresholdNearPlane <
-		ui_category = "Highlight tweaking, near plane";
-		ui_label="Highlight threshold";
+		ui_category = "高光调整,近裁剪面";
+		ui_label="高光阈值";
 		ui_type = "drag";
 		ui_min = 0.00; ui_max = 1.00;
-		ui_tooltip = "The threshold for the source pixels. Pixels with a luminosity above this threshold\nwill be highlighted. Raise this value to only keep the highlights you want.\nWhen highlight type is Twinkle circlets, set the threshold at 0.5 or higher\nfor blur without highlights.";
+		ui_tooltip = "源像素的阈值.亮度高于此阈值的像素将突出显示.\n"
+			"提高此值仅保留所需的高光.当高光类型为'闪烁圆圈'时,\n"
+			"请将阈值设置为0.5或更高,以获得没有高光的模糊.";
 		ui_step = 0.01;
 	> = 0.0;
 	
 	// ------------- ADVANCED SETTINGS
 	uniform bool ShowCoCValues <
-		ui_category = "Advanced";
-		ui_label = "Show CoC values and focus plane";
-		ui_tooltip = "Shows blur disc size (CoC) as grey (far plane) and red (near plane) and focus plane as blue";
+		ui_category = "高级";
+		ui_label = "显示模糊圈值及焦平面";
+		ui_tooltip = "使用灰色的远裁剪面(far plane)和红色的近裁剪面(near plane)标示模糊圈(COC) ,蓝色标示焦平面";
 	> = false;
 #if CD_DEBUG
 	// ------------- DEBUG
