@@ -20,28 +20,28 @@
 /*
 uniform float2 border_width <
 	ui_type = "input";
-	ui_label = "Size";
-	ui_tooltip = "Measured in pixels. If this is set to zero then the ratio will be used instead.";
+	ui_label = "尺寸";
+	ui_tooltip = "以像素为单位的边框尺寸,如果设为零则使用尺寸比例选项中的设置";
 > = float2(0.0, 0.0);
 */
 
 uniform float2 border_width <
 	ui_type = "drag";
-	ui_label = "Size";
-	ui_tooltip = "Measured in pixels. If this is set to zero then the ratio will be used instead.";
+	ui_label = "尺寸";
+	ui_tooltip = "以像素为单位的边框尺寸,如果设为零则使用尺寸比例选项中的设置";
 	ui_min = 0.0; ui_max = (BUFFER_WIDTH * 0.5);
 	ui_step = 1.0;
 	> = float2(0.0, 0.0);
 
 uniform float border_ratio <
 	ui_type = "input";
-	ui_label = "Size Ratio";
-	ui_tooltip = "Set the desired ratio for the visible area.";
+	ui_label = "尺寸比例";
+	ui_tooltip = "设置可见区域比例,仅在尺寸设为0时有效";
 > = 2.35;
 
 uniform float3 border_color <
 	ui_type = "color";
-	ui_label = "Border Color";
+	ui_label = "边框的颜色";
 > = float3(0.0, 0.0, 0.0);
 
 float3 BorderPass(float4 vpos : SV_Position, float2 texcoord : TexCoord) : SV_Target
