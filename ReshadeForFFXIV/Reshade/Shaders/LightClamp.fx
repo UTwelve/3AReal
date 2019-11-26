@@ -24,14 +24,14 @@
 
 uniform float fLUT_AmountChroma < __UNIFORM_SLIDER_FLOAT1
 	ui_min = 0.00; ui_max = 1.00;
-	ui_label = "LUT chroma amount";
-	ui_tooltip = "Intensity of color/chroma change of the LUT.";
+	ui_label = "LUT颜色调整";
+	ui_tooltip = "LUT对于画面颜色或饱和度的调整强度";
 > = 1.00;
 
 uniform float fLUT_AmountLuma < __UNIFORM_SLIDER_FLOAT1
 	ui_min = 0.00; ui_max = 1.00;
-	ui_label = "LUT luma amount";
-	ui_tooltip = "Intensity of luma change of the LUT.";
+	ui_label = "LUT明度调整";
+	ui_tooltip = "LUT对于画面明度的调整强度";
 > = 1.00;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
