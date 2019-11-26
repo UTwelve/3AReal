@@ -36,146 +36,146 @@
 
 uniform bool bADOF_AutofocusEnable <
     ui_type = "bool";
-    ui_label = "Enable Autofocus";
-    ui_tooltip = "Enables automated focus calculation.";
-    ui_category = "Focusing";
+    ui_label = "启用自动对焦";
+    ui_tooltip = "启用自动对焦运算";
+    ui_category = "对焦";
 > = true;
 
 uniform float2 fADOF_AutofocusCenter <
     ui_type = "drag";
     ui_min = 0.0; ui_max = 1.0;
-    ui_label = "Autofocus Center";
-    ui_tooltip = "X and Y coordinates of autofocus center. Axes start from upper left screen corner.";
-    ui_category = "Focusing";
+    ui_label = "自动对焦中心";
+    ui_tooltip = ""设置自动对焦点的X和Y坐标.0,0是屏幕左上角,0.5, 0.5是屏幕中央.";
+    ui_category = "对焦";
 > = float2(0.5, 0.5);
 
 uniform float fADOF_AutofocusRadius <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 1.0;
-    ui_label = "Autofocus sample radius";
-    ui_tooltip = "Radius of area contributing to focus calculation.";
-    ui_category = "Focusing";
+    ui_label = "自动对焦样本半径";
+    ui_tooltip = "自动对焦计算的区域半径,用于调整自动对焦精度";
+    ui_category = "对焦";
 > = 0.6;
 
 uniform float fADOF_AutofocusSpeed <
     ui_type = "drag";
     ui_min = 0.05;
     ui_max = 1.0;
-    ui_label = "Autofocus Adjustment Speed";
-    ui_tooltip = "Adjustment speed of autofocus on focus change";
-    ui_category = "Focusing";
+    ui_label = "自动对焦调整速度";
+    ui_tooltip = "调整自动对焦时焦点变化速度";
+    ui_category = "对焦";
 > = 0.1;
 
 uniform float fADOF_ManualfocusDepth <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 1.0;
-    ui_label = "Manual focus depth";
-    ui_tooltip = "Manually adjusted static focus depth, disable autofocus to use it.";
-    ui_category = "Focusing";
+    ui_label = "手动对焦深度";
+    ui_tooltip = "不使用自动对焦时的焦平面深度";
+    ui_category = "对焦";
 > = 0.001;
 
 uniform float fADOF_NearBlurCurve <
     ui_type = "drag";
     ui_min = 0.5;
     ui_max = 6.0;
-    ui_label = "Near blur curve";
-    ui_category = "Focusing";
+    ui_label = "近模糊曲线";
+    ui_category = "对焦";
 > = 6.0;
 
 uniform float fADOF_FarBlurCurve <
     ui_type = "drag";
     ui_min = 0.5;
     ui_max = 6.0;
-    ui_label = "Far blur curve";
-    ui_category = "Focusing";
+    ui_label = "远模糊曲线";
+    ui_category = "对焦";
 > = 1.5;
 
 uniform float fADOF_HyperFocus <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 1.0;
-    ui_label = "Hyperfocal depth distance";
-    ui_category = "Focusing";
+    ui_label = "超焦距深度距离";
+    ui_category = "对焦";
 > = 0.10;
 
 uniform float fADOF_RenderResolutionMult <
     ui_type = "drag";
     ui_min = 0.5;
     ui_max = 1.0;
-    ui_label = "Size Scale";
-    ui_tooltip = "Resolution Scale of bokeh blur. 0.5 means 1/2 screen width and height.";
-    ui_category = "Blur & Quality";
+    ui_label = "尺寸比例";
+    ui_tooltip = "散景模糊的分辨率缩放比例.其中0.5代表1/2的屏幕长与宽";
+    ui_category = "模糊和质量";
 > = 0.5;
 
 uniform float fADOF_ShapeRadius <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 100.0;
-    ui_label = "Bokeh Maximal Blur Size";
-    ui_tooltip = "Blur size of areas entirely out of focus.";
-    ui_category = "Blur & Quality";
+    ui_label = "散景最大模糊尺寸";
+    ui_tooltip = "完全处于焦外的区域的模糊尺寸";
+    ui_category = "模糊和质量";
 > = 20.5;
 
 uniform float fADOF_SmootheningAmount <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 20.0;
-    ui_label = "Gaussian blur width";
-    ui_tooltip = "Width of gaussian blur after bokeh filter.";
-    ui_category = "Blur & Quality";
+    ui_label = "高斯模糊宽度";
+    ui_tooltip = "散景滤镜后高斯模糊的宽度";
+    ui_category = "模糊和质量";
 > = 4.0;
 
 uniform float fADOF_BokehIntensity <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 1.0;
-    ui_label = "Bokeh Intensity";
-    ui_tooltip = "Intensity of bokeh discs.";
-    ui_category = "Bokeh";
+    ui_label = "散景强度";
+    ui_tooltip = "散景的强度";
+    ui_category = "散景";
 > = 0.3;
 
 uniform int iADOF_ShapeVertices <
     ui_type = "drag";
     ui_min = 3;
     ui_max = 9;
-    ui_label = "Bokeh shape vertices";
-    ui_tooltip = "Vertices of bokeh kernel. 5 = pentagon, 6 = hexagon etc.";
-    ui_category = "Bokeh";
+    ui_label = "散景形状";
+    ui_tooltip = "调整散景的形状例如3为三角形,4为四边形,5为五边形";
+    ui_category = "散景";
 > = 6;
 
 uniform int iADOF_ShapeQuality <
     ui_type = "drag";
     ui_min = 2;
     ui_max = 25;
-    ui_label = "Bokeh shape quality";
-    ui_category = "Bokeh";
+    ui_label = "散景形状质量";
+    ui_category = "散景";
 > = 5;
 
 uniform float fADOF_ShapeCurvatureAmount <
     ui_type = "drag";
     ui_min = -1.0;
     ui_max = 1.0;
-    ui_label = "Bokeh shape roundness";
-    ui_tooltip = "Roundness of bokeh kernel. 1.0 = circle, 0.0 = polygon.";
-    ui_category = "Bokeh";
+    ui_label = "散景形状圆度";
+    ui_tooltip = "1.0是圆,0.0是多边形";
+    ui_category = "散景";
 > = 1.0;
 
 uniform float fADOF_ShapeRotation <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 360.0;
-    ui_label = "Bokeh shape rotation";
-    ui_category = "Bokeh";
+    ui_label = "散景形状旋转";
+    ui_category = "散景";
 > = 0.0;
 
 uniform float fADOF_ShapeAnamorphRatio <
     ui_type = "drag";
     ui_min = 0.0;
     ui_max = 1.0;
-    ui_label = "Bokeh shape aspect ratio";
-    ui_category = "Bokeh";
+    ui_label = "散景形状的长宽比";
+    ui_category = "散景";
 > = 1.0;
 
 #if(ADOF_OPTICAL_VIGNETTE_ENABLE != 0)
@@ -183,16 +183,16 @@ uniform float fADOF_ShapeAnamorphRatio <
         ui_type = "drag";
         ui_min = 0.5;
         ui_max = 2.5;
-        ui_label = "Bokeh shape vignette curve";
-        ui_category = "Bokeh";
+        ui_label = "散景形状晕影曲线";
+        ui_category = "散景";
     > = 0.75;
 
     uniform float fADOF_ShapeVignetteAmount <
         ui_type = "drag";
         ui_min = 0.0;
         ui_max = 2.0;
-        ui_label = "Bokeh shape vignette amount";
-        ui_category = "Bokeh";
+        ui_label = "散景形状晕影量";
+        ui_category = "散景";
     > = 1.0;
 #endif
 
@@ -201,16 +201,16 @@ uniform float fADOF_ShapeAnamorphRatio <
         ui_type = "drag";
         ui_min = -1.0;
         ui_max = 1.0;
-        ui_label = "Shape chromatic aberration amount";
-        ui_category = "Chromatic Aberration";
+        ui_label = "形状色像差量";
+        ui_category = "色像差";
     > = -0.1;
 
     uniform int iADOF_ShapeChromaMode <
         ui_type = "drag";
         ui_min = 0;
         ui_max = 2;
-        ui_label = "Shape chromatic aberration type";
-        ui_category = "Chromatic Aberration";
+        ui_label = "形状色像差类型";
+        ui_category = "色像差";
     > = 2;
 #endif
 
