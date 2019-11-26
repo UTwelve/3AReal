@@ -22,26 +22,26 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/.
 #include "ReShadeUI.fxh"
 
 uniform int Aberration < __UNIFORM_SLIDER_INT1
-	ui_label = "Aberration scale in pixels";
+	ui_label = "以像素为单位的色像差规模";
 	ui_min = -48; ui_max = 48;
 > = 6;
 
 uniform float Curve < __UNIFORM_SLIDER_FLOAT1
-	ui_label = "Aberration curve";
+	ui_label = "色像差曲线";
 	ui_min = 0.0; ui_max = 4.0; ui_step = 0.01;
 > = 1.0;
 
 uniform bool Automatic <
-	ui_label = "Automatic sample count";
-	ui_tooltip = "Amount of samples will be adjusted automatically";
-	ui_category = "Performance";
+	ui_label = "自动样本数";
+	ui_tooltip = "样本数量将会被自动调整";
+	ui_category = "性能";
 > = true;
 
 uniform int SampleCount < __UNIFORM_SLIDER_INT1
-	ui_label = "Samples";
-	ui_tooltip = "Amount of samples (only even numbers are accepted, odd numbers will be clamped)";
+	ui_label = "样本";
+	ui_tooltip = "样本量,仅支持偶数,在奇数时将按相邻较低的偶数计算";
 	ui_min = 6; ui_max = 32;
-	ui_category = "Performance";
+	ui_category = "性能";
 > = 8;
 
 
