@@ -45,7 +45,7 @@ uniform float2 fADOF_AutofocusCenter <
     ui_type = "drag";
     ui_min = 0.0; ui_max = 1.0;
     ui_label = "自动对焦中心";
-    ui_tooltip = ""设置自动对焦点的X和Y坐标.0,0是屏幕左上角,0.5, 0.5是屏幕中央.";
+    ui_tooltip = "设置自动对焦点的X和Y坐标.0,0是屏幕左上角,0.5, 0.5是屏幕中央.";
     ui_category = "对焦";
 > = float2(0.5, 0.5);
 
