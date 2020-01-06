@@ -14,8 +14,6 @@
 
     CC BY-NC-ND 3.0 licensed.
 
-    PATREON ONLY FILE - DO NOT SHARE
-
 =============================================================================*/
 
 /*=============================================================================
@@ -27,30 +25,32 @@
 =============================================================================*/
 
 uniform float SHARP_STRENGTH <
-    ui_type = "drag";
-    ui_label = "Sharpen Strength";
+    ui_type = "slider";
+    ui_label = "锐化强度";
     ui_min = 0.0;
     ui_max = 1.0;
 > = 0.7;
 
 uniform bool DEPTH_MASK_ENABLE <
-    ui_label = "Use Depth Mask";
+    ui_label = "使用Depth Mask";
 > = true;
 
 uniform bool RMS_MASK_ENABLE <
-    ui_label = "Use Local Contrast Enhancer";
+    ui_label = "使用局部对比度增强器";
 > = true;
 
 uniform int SHARPEN_MODE <
 	ui_type = "radio";
-    ui_label = "Sharpen Mode";
-	ui_items = "Chroma\0Luma\0";
+    ui_label = "锐化模式";
+    ui_category = "锐化模式";
+	ui_items = "彩度Chroma\0亮度Luma\0";
 > = 1;
 
 /*=============================================================================
 	Textures, Samplers, Globals
 =============================================================================*/
 
+#define RESHADE_QUINT_COMMON_VERSION_REQUIRE 200
 #include "qUINT_common.fxh"
 
 /*=============================================================================
@@ -91,6 +91,12 @@ float3 blend_overlay(float3 a, float3 b)
     return a < 0.5 ? (2.0 * a * b) : (1.0 - 2.0 * c * d);
 }
 
+float4 fetch_color_and_depth(float2 uv)
+{
+    return float4( tex2D(qUINT::sBackBufferTex, uv).rgb, 
+                   qUINT::linear_depth(uv));
+}
+
 /*=============================================================================
 	Pixel Shaders
 =============================================================================*/
@@ -105,32 +111,21 @@ void PS_Sharp(in VSOUT i, out float3 o : SV_Target0)
 
     float3 offsets = float3(1, 0, -1);
     
-    A.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.zz * qUINT::PIXEL_SIZE).rgb;
-    B.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.yz * qUINT::PIXEL_SIZE).rgb;
-    C.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.xz * qUINT::PIXEL_SIZE).rgb;
-    D.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.zy * qUINT::PIXEL_SIZE).rgb;
-    E.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.yy * qUINT::PIXEL_SIZE).rgb;
-    F.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.xy * qUINT::PIXEL_SIZE).rgb;
-    G.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.zx * qUINT::PIXEL_SIZE).rgb;
-    H.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.yx * qUINT::PIXEL_SIZE).rgb;
-    I.rgb = tex2D(qUINT::sBackBufferTex, i.uv + offsets.xx * qUINT::PIXEL_SIZE).rgb;
-
-    A.w = qUINT::linear_depth(i.uv + offsets.zz * qUINT::PIXEL_SIZE);
-    B.w = qUINT::linear_depth(i.uv + offsets.yz * qUINT::PIXEL_SIZE);
-    C.w = qUINT::linear_depth(i.uv + offsets.xz * qUINT::PIXEL_SIZE);
-    D.w = qUINT::linear_depth(i.uv + offsets.zy * qUINT::PIXEL_SIZE);
-    E.w = qUINT::linear_depth(i.uv + offsets.yy * qUINT::PIXEL_SIZE);
-    F.w = qUINT::linear_depth(i.uv + offsets.xy * qUINT::PIXEL_SIZE);
-    G.w = qUINT::linear_depth(i.uv + offsets.zx * qUINT::PIXEL_SIZE);
-    H.w = qUINT::linear_depth(i.uv + offsets.yx * qUINT::PIXEL_SIZE);
-    I.w = qUINT::linear_depth(i.uv + offsets.xx * qUINT::PIXEL_SIZE);
+    A = fetch_color_and_depth(i.uv + offsets.zz * qUINT::PIXEL_SIZE);
+    B = fetch_color_and_depth(i.uv + offsets.yz * qUINT::PIXEL_SIZE);
+    C = fetch_color_and_depth(i.uv + offsets.xz * qUINT::PIXEL_SIZE);
+    D = fetch_color_and_depth(i.uv + offsets.zy * qUINT::PIXEL_SIZE);
+    E = fetch_color_and_depth(i.uv + offsets.yy * qUINT::PIXEL_SIZE);
+    F = fetch_color_and_depth(i.uv + offsets.xy * qUINT::PIXEL_SIZE);
+    G = fetch_color_and_depth(i.uv + offsets.zx * qUINT::PIXEL_SIZE);
+    H = fetch_color_and_depth(i.uv + offsets.yx * qUINT::PIXEL_SIZE);
+    I = fetch_color_and_depth(i.uv + offsets.xx * qUINT::PIXEL_SIZE);
 
     float4 corners = (A + C) + (G + I);
     float4 neighbours = (B + D) + (F + H);
     float4 center = E;
 
     float4 edge = corners + 2.0 * neighbours - 12.0 * center;
-
     float3 sharpen = edge.rgb;
 
     //measures root mean square as local contrast measurement
@@ -152,7 +147,7 @@ void PS_Sharp(in VSOUT i, out float3 o : SV_Target0)
         RMS += (mean - I.rgb) * (mean - I.rgb);
 
         //sharpen /= RMS * 16.0 + 0.025 * 16.0; //wrapped the div / 9 in here
-        sharpen *= rsqrt(RMS + 0.01) * 0.25;
+        sharpen *= rsqrt(RMS + 0.001) * 0.1;
     }
 
     //Remove sharpen completely from depth edges, as these never look good
@@ -165,7 +160,7 @@ void PS_Sharp(in VSOUT i, out float3 o : SV_Target0)
     if(SHARPEN_MODE == 1) 
         sharpen = color_to_lum(sharpen);
 
-    sharpen = -sharpen * SHARP_STRENGTH * 0.25;
+    sharpen = -sharpen * SHARP_STRENGTH * 0.1;
     //smooth falloff, cheaper than pow() with little error    
     sharpen = sign(sharpen) * log(abs(sharpen) * 10.0 + 1.0)*0.3; 
 
@@ -178,7 +173,14 @@ void PS_Sharp(in VSOUT i, out float3 o : SV_Target0)
 
 
 
-technique DELC_sharp
+technique DELC_Sharpen
+< ui_tooltip = "                     >> qUINT::DELCS <<\n\n"
+			   "DELCS is an advanced sharpen filter made to enhance texture detail.\n"
+               "It offers a local contrast detection method and allows to suppress\n"
+               "oversharpening on depth edges to combat common sharpen artifacts.\n"
+               "get access to more functionality.\n"
+               "\nDELCS is best positioned after most shaders but before film grain or such.\n"
+               "\DELCS is written by Marty McFly / Pascal Gilcher"; >
 {
     pass
 	{
