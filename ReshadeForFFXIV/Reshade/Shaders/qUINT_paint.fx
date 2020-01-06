@@ -62,6 +62,7 @@ uniform int NUM_STEPS_PER_PASS <
 	Textures, Samplers, Globals
 =============================================================================*/
 
+#define RESHADE_QUINT_COMMON_VERSION_REQUIRE 200
 #include "qUINT_common.fxh"
 
 /*
