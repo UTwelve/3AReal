@@ -1,11 +1,7 @@
 #include "ReShade.fxh"
 
 #ifndef REMOVE_TINT_MINMAX_STEP
-#define REMOVE_TINT_MINMAX_STEP BUFFER_WIDTH/64
-#endif
-
-#ifndef REMOVE_TINT_DEBUG
-#define REMOVE_TINT_DEBUG 1
+	#define REMOVE_TINT_MINMAX_STEP BUFFER_WIDTH/64
 #endif
 
 uniform float fUISpeed <
@@ -18,7 +14,7 @@ uniform float fUISpeed <
 #ifdef REMOVE_TINT_CUSTOM_COLORS
 uniform bool bUIUseCustomColors <
 	ui_type = "radio";
-	ui_label = "使用自定义颜色";
+	ui_label = "Use Custom Colors";
 > = false;
 
 uniform float3 fUIColorMin <
@@ -34,7 +30,7 @@ uniform float3 fUIColorMax <
 
 uniform float fUIStrength <
 	ui_type = "slider";
-	ui_label = "强度";
+	ui_label = "Strength";
 	ui_min = 0.0; ui_max = 1.0;
 	ui_step = 0.01;
 > = 1.0;
